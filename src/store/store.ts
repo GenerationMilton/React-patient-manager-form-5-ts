@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { devtools } from 'zustand/middleware'
 import { v4 as uuidv4 } from 'uuid'
 import type { DraftPatient, Patient } from "../types"
 
@@ -16,26 +17,28 @@ const createPatient = (patient: DraftPatient) : Patient => {
 }
 
 //Zustand Store
-export const usePatientStore = create<PatientState>((set) => ({
-    patients: [],
-    //to update form
-    activeId:'',
-    //functions that modifies the state
-    addPatient: (data) => {
-        
-        const newPatient = createPatient(data)
-        set((state) => ({
-            patients: [...state.patients, newPatient]
-        }))
-    },
-    deletePatient: (id) => {
-        set((state) => ({
-            patients: state.patients.filter(patient => patient.id !== id )
-        }))
-    },
-    getPatientById:(id)=>{
-        set(()=> ({
-            activeId: id
-        }))
-    }
-}))
+export const usePatientStore = create<PatientState>()(
+    devtools((set) => ({
+        patients: [],
+        //to update form
+        activeId:'',
+        //functions that modifies the state
+        addPatient: (data) => {
+            
+            const newPatient = createPatient(data)
+            set((state) => ({
+                patients: [...state.patients, newPatient]
+            }))
+        },
+        deletePatient: (id) => {
+            set((state) => ({
+                patients: state.patients.filter(patient => patient.id !== id )
+            }))
+        },
+        getPatientById:(id)=>{
+            set(()=> ({
+                activeId: id
+            }))
+        }
+    })
+))
