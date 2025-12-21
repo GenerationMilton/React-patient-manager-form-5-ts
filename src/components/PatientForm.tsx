@@ -16,6 +16,9 @@ export default function PatientForm() {
     //to obtain patients
     const patients = usePatientStore( state => state.patients)
 
+    //to update patient
+    const uptadePatient = usePatientStore(state => state.updatePatient)
+
   const { register, handleSubmit, setValue, formState: {errors}, reset } = useForm<DraftPatient>();
 
   useEffect( ()=> {
@@ -30,8 +33,12 @@ export default function PatientForm() {
   },[activeId])
 
   const registerPatient = (data: DraftPatient) => {
-    //call the store in registerPatient
-    addPatient(data)
+    if(activeId){
+      uptadePatient(data)
+    } else{
+     //call the store in registerPatient
+      addPatient(data)
+    }
 
     //reset form
     reset()
