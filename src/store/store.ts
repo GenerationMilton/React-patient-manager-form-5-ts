@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { devtools } from 'zustand/middleware'
+import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 import { v4 as uuidv4 } from 'uuid'
 import type { DraftPatient, Patient } from "../types"
 
@@ -19,7 +19,9 @@ const createPatient = (patient: DraftPatient) : Patient => {
 
 //Zustand Store
 export const usePatientStore = create<PatientState>()(
-    devtools((set) => ({
+    devtools(
+    persist(   
+        (set) => ({
         patients: [],
         //to update form
         activeId:'',
@@ -48,5 +50,8 @@ export const usePatientStore = create<PatientState>()(
                 activeId: ''
             }))
         }
+    }),{
+        name:'patient-storage',
+        storage: createJSONStorage (() => localStorage)
     })
 ))

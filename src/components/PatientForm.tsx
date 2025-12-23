@@ -82,10 +82,6 @@ export default function PatientForm() {
                     <Error>{errors.name?.message?.toString()}</Error>
                   )}
 
-                  {errors.maxLength && (
-                    <Error>{errors.maxLength?.message?.toString()}</Error>
-                  )}
-
               </div>
 
               <div className="mb-5">
